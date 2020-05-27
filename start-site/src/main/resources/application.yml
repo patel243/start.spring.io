@@ -9,6 +9,7 @@ server:
     mime-types: application/json,text/css,text/html
     min-response-size: 2048
   error:
+    include-message: always
     whitelabel:
       enabled: false
   forward-headers-strategy: native
@@ -32,9 +33,11 @@ initializr:
           - compatibilityRange: "[2.0.0.RELEASE,2.1.0.RELEASE)"
             version: 2.0.10
           - compatibilityRange: "[2.1.0.RELEASE, 2.2.0.M1)"
-            version: 2.1.7
-          - compatibilityRange: "2.2.0.M1"
-            version: 2.2.0
+            version: 2.1.10
+          - compatibilityRange: "[2.2.0.M1, 2.3.0.M1)"
+            version: 2.2.4
+          - compatibilityRange: "2.3.0.M1"
+            version: 2.3.1
       codecentric-spring-boot-admin:
         groupId: de.codecentric
         artifactId: spring-boot-admin-dependencies
@@ -45,7 +48,23 @@ initializr:
           - compatibilityRange: "[2.1.0.M1,2.2.0.M1)"
             version: 2.1.6
           - compatibilityRange: "2.2.0.M1"
-            version: 2.2.1
+            version: 2.2.3
+      solace-spring-boot:
+        groupId: com.solace.spring.boot
+        artifactId: solace-spring-boot-bom
+        versionProperty: solace-spring-boot.version
+        mappings:
+          - compatibilityRange: "[2.2.0.RELEASE, 2.3.0.M1)"
+            version: 1.0.0
+          - compatibilityRange: "2.3.0.M1"
+            version: 1.1.0
+      solace-spring-cloud:
+        groupId: com.solace.spring.cloud
+        artifactId: solace-spring-cloud-bom
+        versionProperty: solace-spring-cloud.version
+        mappings:
+          - compatibilityRange: "[2.2.0.RELEASE, 2.3.0.M1)"
+            version: 1.0.0
       spring-cloud:
         groupId: org.springframework.cloud
         artifactId: spring-cloud-dependencies
@@ -92,9 +111,9 @@ initializr:
           - compatibilityRange: "[2.1.x.BUILD-SNAPSHOT,2.2.0.M4)"
             version: Greenwich.BUILD-SNAPSHOT
             repositories: spring-snapshots,spring-milestones
-          - compatibilityRange: "[2.2.0.M4,2.2.x.BUILD-SNAPSHOT)"
-            version: Hoxton.SR1
-          - compatibilityRange: "[2.2.x.BUILD-SNAPSHOT,2.3.0.M1)"
+          - compatibilityRange: "[2.2.0.M4,2.3.x.BUILD-SNAPSHOT)"
+            version: Hoxton.SR4
+          - compatibilityRange: "2.3.x.BUILD-SNAPSHOT"
             version: Hoxton.BUILD-SNAPSHOT
             repositories: spring-snapshots,spring-milestones
       spring-cloud-alibaba:
@@ -103,7 +122,7 @@ initializr:
         versionProperty: spring-cloud-alibaba.version
         mappings:
           - compatibilityRange: "[2.2.0.RELEASE,2.3.0.M1)"
-            version: 2.2.0.RELEASE
+            version: 2.2.1.RELEASE
       spring-cloud-services:
         groupId: io.pivotal.spring.cloud
         artifactId: spring-cloud-services-dependencies
@@ -113,19 +132,9 @@ initializr:
           - compatibilityRange: "[2.0.0.RELEASE,2.1.0.RELEASE)"
             version: 2.0.3.RELEASE
           - compatibilityRange: "[2.1.0.RELEASE,2.2.0.RELEASE)"
-            version: 2.1.6.RELEASE
+            version: 2.1.7.RELEASE
           - compatibilityRange: "[2.2.0.RELEASE,2.3.0.M1)"
-            version: 2.2.1.RELEASE
-      spring-data-r2dbc:
-        groupId: org.springframework.boot.experimental
-        artifactId: spring-boot-bom-r2dbc
-        mappings:
-          - compatibilityRange: "[2.2.0.M6,2.2.x.BUILD-SNAPSHOT)"
-            version: 0.1.0.M3
-            repositories: spring-milestones
-          - compatibilityRange: "2.2.x.BUILD-SNAPSHOT"
-            version: 0.1.0.BUILD-SNAPSHOT
-            repositories: spring-snapshots,spring-milestones
+            version: 2.2.3.RELEASE
       spring-statemachine:
         groupId: org.springframework.statemachine
         artifactId: spring-statemachine-bom
@@ -147,7 +156,18 @@ initializr:
           - compatibilityRange: "[2.0.0.M1,2.1.0.M1)"
             version: 10.0.17
           - compatibilityRange: "2.1.0.M1"
-            version: 14.1.17
+            version: 14.2.0
+      wavefront:
+        groupId: com.wavefront
+        artifactId: wavefront-spring-boot-bom
+        versionProperty: wavefront.version
+        mappings:
+          - compatibilityRange: "[2.1.0.RELEASE,2.3.x.BUILD-SNAPSHOT)"
+            version: 2.0.0-RC1
+            repositories: spring-milestones
+          - compatibilityRange: "2.3.x.BUILD-SNAPSHOT"
+            version: 2.0.0-SNAPSHOT
+            repositories: spring-snapshots
     gradle:
       dependency-management-plugin-version: 1.0.9.RELEASE
     kotlin:
@@ -414,21 +434,18 @@ initializr:
               description: Using Spring Data JDBC
             - rel: reference
               href: https://docs.spring.io/spring-data/jdbc/docs/current/reference/html/
-        - name: Spring Data R2DBC [Experimental]
+        - name: Spring Data R2DBC
           id: data-r2dbc
-          compatibilityRange: "2.2.0.M6"
-          groupId: org.springframework.boot.experimental
-          artifactId: spring-boot-starter-data-r2dbc
-          bom: spring-data-r2dbc
+          compatibilityRange: "2.3.0.M3"
           description: Provides Reactive Relational Database Connectivity to persist data in SQL stores using Spring Data in reactive applications.
           facets:
             - reactive
           links:
             - rel: guide
-              href: https://github.com/spring-projects-experimental/spring-boot-r2dbc/tree/master/spring-boot-example-h2
-              description: R2DBC example
+              href: https://spring.io/guides/gs/accessing-data-r2dbc/
+              description: Acessing data with R2DBC
             - rel: reference
-              href: https://docs.spring.io/spring-data/r2dbc/docs/1.0.x/reference/html/#reference
+              href: https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/html/spring-boot-features.html#boot-features-r2dbc
             - rel: home
               href: https://r2dbc.io
               description: R2DBC Homepage
@@ -447,7 +464,7 @@ initializr:
             - compatibilityRange: "[2.0.0.RELEASE,2.1.0.RELEASE)"
               version: 2.0.1
             - compatibilityRange: "2.1.0.RELEASE"
-              version: 2.1.1
+              version: 2.1.2
         - name: Liquibase Migration
           id: liquibase
           description: Liquibase database migration and source control library.
@@ -609,13 +626,13 @@ initializr:
           description: Apache Geode is a data management platform that helps users build real-time, highly concurrent, highly performant and reliable Spring Boot applications at scale that is compatible with Pivotal Cloud Cache.
           mappings:
             - compatibilityRange: "[2.2.0.M5,2.3.0.M1)"
-              version: 1.2.4.RELEASE
+              version: 1.2.7.RELEASE
             - compatibilityRange: "[2.3.0.M1, 2.3.x.BUILD-SNAPSHOT)"
-              version: 1.3.0.M1
-              repositories: spring-milestones
+              version: 1.3.0.RC1
+              repository: spring-milestones
             - compatibilityRange: "2.3.x.BUILD-SNAPSHOT"
               version: 1.3.0.BUILD-SNAPSHOT
-              repositories: spring-snapshots
+              repository: spring-snapshots
           links:
             - rel: reference
               href: https://docs.spring.io/spring-boot-data-geode-build/current/reference/html5/
@@ -734,10 +751,10 @@ initializr:
               version: 2.22.4
               groupId: org.apache.camel
             - compatibilityRange: "[2.1.0.M1,2.2.0.M1)"
-              version: 2.24.3
+              version: 2.25.1
               groupId: org.apache.camel
             - compatibilityRange: "2.2.0.M1"
-              version: 3.0.1
+              version: 3.3.0
           description: Apache Camel is an open source integration framework that empowers you to quickly and easily integrate various systems consuming or producing data.
           groupId: org.apache.camel.springboot
           artifactId: camel-spring-boot-starter
@@ -746,25 +763,19 @@ initializr:
               href: https://camel.apache.org/spring-boot
               description: Using Apache Camel with Spring Boot
         - name: Solace PubSub+
+          bom: solace-spring-boot
           id: solace
-          compatibilityRange: 2.1.0.RELEASE
-          description: Connect to a Solace PubSub+ Advanced Event Broker using the Solace JMS support to send and receive messages.
+          compatibilityRange: "2.2.0.RELEASE"
+          description: Connect to a Solace PubSub+ Advanced Event Broker to publish, subscribe, request/reply and store/replay messages
           groupId: com.solace.spring.boot
-          artifactId: solace-jms-spring-boot-starter
-          mappings:
-            - compatibilityRange: "[2.1.0.RELEASE,2.2.0.M1)"
-              version: 3.1.0
-            - compatibilityRange: "2.2.0.M1"
-              version: 3.2.0
+          artifactId: solace-spring-boot-starter
           links:
+            - rel: reference
+              href: https://www.solace.dev/start-spring-io-help/
+              description: Getting started with Solace and Spring
             - rel: reference
               href: https://solace.dev
               description: Solace Developer Portal
-            - rel: reference
-              href: https://github.com/SolaceProducts/solace-jms-spring-boot
-            - rel: guide
-              href: https://github.com/SolaceProducts/solace-jms-spring-boot/tree/master/solace-jms-sample-app
-              description: Solace sample application using JMS.
     - name: I/O
       content:
         - name: Spring Batch
@@ -776,6 +787,12 @@ initializr:
               description: Creating a Batch Service
             - rel: reference
               href: https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#howto-batch-applications
+        - name: Validation
+          id: validation
+          description: JSR-303 validation with Hibernate validator.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/htmlsingle/#boot-features-validation
         - name: Java Mail Sender
           id: mail
           description: Send email using Java Mail and Spring Framework's JavaMailSender.
@@ -825,6 +842,71 @@ initializr:
           links:
             - rel: reference
               href: https://codecentric.github.io/spring-boot-admin/current/#getting-started
+    - name: Observability
+      content:
+        - name: Datadog
+          id: datadog
+          groupId: io.micrometer
+          artifactId: micrometer-registry-datadog
+          scope: runtime
+          starter: false
+          description: Datadog is a dimensional time-series SAAS with built-in dashboarding and alerting.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/html/production-ready-features.html#production-ready-metrics-export-datadog
+        - name: Influx
+          id: influx
+          groupId: io.micrometer
+          artifactId: micrometer-registry-influx
+          scope: runtime
+          starter: false
+          description: Support real-time stream processing and storage of time-series data.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/html/production-ready-features.html#production-ready-metrics-export-influx
+        - name: Graphite
+          id: graphite
+          groupId: io.micrometer
+          artifactId: micrometer-registry-graphite
+          scope: runtime
+          starter: false
+          description: Hierarchical metrics systems backed by a fixed-size database.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/html/production-ready-features.html#production-ready-metrics-export-graphite
+        - name: New Relic
+          id: new-relic
+          groupId: io.micrometer
+          artifactId: micrometer-registry-new-relic
+          scope: runtime
+          starter: false
+          description: SaaS offering with a full UI and a query language called NRQL.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/html/production-ready-features.html#production-ready-metrics-export-new-relic
+        - name: Prometheus
+          id: prometheus
+          groupId: io.micrometer
+          artifactId: micrometer-registry-prometheus
+          scope: runtime
+          starter: false
+          description: An in-memory dimensional time series database with a simple built-in UI, a custom query language, and math operations.
+          links:
+            - rel: reference
+              href: https://docs.spring.io/spring-boot/docs/{bootVersion}/reference/html/production-ready-features.html#production-ready-metrics-export-prometheus
+        - name: Wavefront
+          id: wavefront
+          groupId: com.wavefront
+          artifactId: wavefront-spring-boot-starter
+          bom: wavefront
+          description: Tanzu Observability by Wavefront is a SaaS-based metrics monitoring and analytics platform that lets you visualize, query, and alert over data from across your entire stack (infrastructure, network, custom app metrics, business KPIs, etc.)
+          links:
+            - rel: reference
+              href: https://docs.wavefront.com/wavefront_springboot.html
+              description: Wavefront for Spring Boot documentation
+            - rel: reference
+              href: https://github.com/wavefrontHQ/wavefront-spring-boot
+              description: Wavefront for Spring Boot repository
     - name: Testing
       content:
         - name: Spring REST Docs
@@ -838,7 +920,6 @@ initializr:
           bom: spring-cloud
           id: cloud-contract-verifier
           description: Moves TDD to the level of software architecture by enabling Consumer Driven Contract (CDC) development.
-          compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
           groupId: org.springframework.cloud
           artifactId: spring-cloud-starter-contract-verifier
           scope: test
@@ -850,7 +931,6 @@ initializr:
           bom: spring-cloud
           id: cloud-contract-stub-runner
           description: Stub Runner for HTTP/Messaging based communication. Allows creating WireMock stubs from RestDocs tests.
-          compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
           groupId: org.springframework.cloud
           artifactId: spring-cloud-starter-contract-stub-runner
           scope: test
@@ -873,7 +953,6 @@ initializr:
           starter: false
     - name: Spring Cloud
       bom: spring-cloud
-      compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
       content:
         - name: Cloud Bootstrap
           id: cloud-starter
@@ -902,7 +981,6 @@ initializr:
           artifactId: spring-cloud-starter-task
     - name: Spring Cloud Security
       bom: spring-cloud
-      compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
       content:
         - name: Cloud Security
           id: cloud-security
@@ -924,7 +1002,6 @@ initializr:
           bom: spring-cloud
           id: open-service-broker
           description: Framework for building Spring Boot apps that implement the Open Service Broker API, which can deliver services to applications running within cloud native platforms such as Cloud Foundry, Kubernetes and OpenShift.
-          compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
           groupId: org.springframework.cloud
           artifactId: spring-cloud-starter-open-service-broker
           mappings:
@@ -943,7 +1020,6 @@ initializr:
               description: Using Spring Cloud Open Service Broker
     - name: Spring Cloud Config
       bom: spring-cloud
-      compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
       content:
         - name: Config Client
           id: cloud-config-client
@@ -975,10 +1051,11 @@ initializr:
           description: Enable and configure the common patterns inside your application and build large distributed systems with Hashicorp’s Consul. The patterns provided include Service Discovery, Distributed Configuration and Control Bus.
           groupId: org.springframework.cloud
           artifactId: spring-cloud-starter-consul-config
-          starter: false
+          mappings:
+            - compatibilityRange: "[2.0.0.RELEASE,2.3.x.BUILD-SNAPSHOT)"
+              starter: false
     - name: Spring Cloud Discovery
       bom: spring-cloud
-      compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
       content:
         - name: Eureka Discovery Client
           id: cloud-eureka
@@ -1011,7 +1088,6 @@ initializr:
           artifactId: spring-cloud-starter-consul-discovery
     - name: Spring Cloud Routing
       bom: spring-cloud
-      compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
       content:
         - name: Zuul [Maintenance]
           id: cloud-zuul
@@ -1047,7 +1123,7 @@ initializr:
           artifactId: spring-cloud-starter-openfeign
         - name: Cloud LoadBalancer
           id: cloud-loadbalancer
-          compatibilityRange: "[2.2.0.M4,2.3.0.M1)"
+          compatibilityRange: "2.2.0.M4"
           description: Client-side load-balancing with Spring Cloud LoadBalancer.
           groupId: org.springframework.cloud
           artifactId: spring-cloud-starter-loadbalancer
@@ -1059,11 +1135,10 @@ initializr:
               href: https://cloud.spring.io/spring-cloud-static/spring-cloud-commons/current/reference/html/#spring-cloud-loadbalancer
     - name: Spring Cloud Circuit Breaker
       bom: spring-cloud
-      compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
       content:
         - name: Resilience4J
           id: cloud-resilience4j
-          compatibilityRange: "[2.2.0.RELEASE,2.3.0.M1)"
+          compatibilityRange: "2.2.0.RELEASE"
           description: Spring Cloud Circuit breaker with Resilience4j as the underlying implementation.
           groupId: org.springframework.cloud
           artifactId: spring-cloud-starter-circuitbreaker-resilience4j
@@ -1096,7 +1171,6 @@ initializr:
           artifactId: spring-cloud-starter-netflix-turbine-stream
     - name: Spring Cloud Tracing
       bom: spring-cloud
-      compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
       content:
         - name: Sleuth
           id: cloud-starter-sleuth
@@ -1110,7 +1184,6 @@ initializr:
           artifactId: spring-cloud-starter-zipkin
     - name: Spring Cloud Messaging
       bom: spring-cloud
-      compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
       content:
         - name: Cloud Bus
           id: cloud-bus
@@ -1119,7 +1192,7 @@ initializr:
           artifactId: spring-cloud-bus
         - name: Cloud Stream
           id: cloud-stream
-          description: Framework for building highly scalable event-driven microservices connected with shared messaging systems (requires a binder, e.g. Apache Kafka or RabbitMQ).
+          description: Framework for building highly scalable event-driven microservices connected with shared messaging systems (requires a binder, e.g. Apache Kafka, RabbitMQ or Solace PubSub+).
           groupId: org.springframework.cloud
           artifactId: spring-cloud-stream
         - name: Reactive Cloud Stream
@@ -1159,7 +1232,6 @@ initializr:
               href: https://docs.pivotal.io/spring-cloud-services/
     - name: Amazon Web Services
       bom: spring-cloud
-      compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
       content:
         - name: AWS Core
           id: cloud-aws
@@ -1181,7 +1253,6 @@ initializr:
           starter: false
     - name: Microsoft Azure
       bom: azure
-      compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
       content:
         - name: Azure Support
           id: azure-support
@@ -1217,6 +1288,7 @@ initializr:
           id: azure-storage
           groupId: com.microsoft.azure
           artifactId: azure-storage-spring-boot-starter
+          compatibilityRange: "[2.0.0.RELEASE,2.3.0.M1)"
           description: Azure Storage service integration.
           links:
             - rel: guide
@@ -1270,6 +1342,7 @@ initializr:
           description: Support for externalized configuration in a distributed system, auto refresh when configuration changes.
           groupId: com.alibaba.cloud
           artifactId: spring-cloud-starter-alibaba-nacos-config
+          starter: false
           links:
             - rel: reference
               href: https://spring-cloud-alibaba-group.github.io/github-pages/hoxton/en-us/index.html#_spring_cloud_alibaba_nacos_config
@@ -1292,6 +1365,7 @@ initializr:
           description: Flow control and circuit breaking with Alibaba Sentinel.
           groupId: com.alibaba.cloud
           artifactId: spring-cloud-starter-alibaba-sentinel
+          starter: false
           links:
             - rel: reference
               href: https://spring-cloud-alibaba-group.github.io/github-pages/hoxton/en-us/index.html#_spring_cloud_alibaba_sentinel
@@ -1339,7 +1413,7 @@ initializr:
       id: war
       default: false
   javaVersions:
-    - id: 13
+    - id: 14
       default: false
     - id: 11
       default: false
