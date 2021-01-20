@@ -8,10 +8,17 @@ running at https://start.spring.io. The following modules are available:
 * `start-site`: server infrastructure and metadata configuration
 * `start-site-verification`: tests to verify the validity of the metadata
 
+[[using]]
+== Using
+There is a link:USING.adoc[dedicated page] that describes how you can interact with the
+service.
+
+
+
 [[build]]
 == Building from Source
 
-You need Java 1.8 and a bash-like shell.
+You need Java 11 and a bash-like shell.
 
 [[building]]
 === Building
@@ -71,7 +78,7 @@ to reload the app whenever you make any change.
 This is the recommended way to operate while you are developing the application,
 especially the UI.
 
-## Reusing the Web UI
+== Reusing the Web UI
 This instance has a thin layer with our opinions about getting started with Spring Boot.
 You can reuse them but please keep in mind that this is not supported with the same
 level as the Spring Initializr library. The Web UI, in particular, is for our own
@@ -79,7 +86,7 @@ purpose and is not particularly engineered to be easily extended.
 
 
 
-## Deploying to Cloud Foundry
+== Deploying to Cloud Foundry
 
 If you are on a Mac and using https://brew.sh/[homebrew], install the Cloud Foundry
 CLI:

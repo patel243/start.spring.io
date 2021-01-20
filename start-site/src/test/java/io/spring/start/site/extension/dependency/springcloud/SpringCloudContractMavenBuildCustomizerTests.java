@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2019 the original author or authors.
+ * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 package io.spring.start.site.extension.dependency.springcloud;
 
+import io.spring.initializr.metadata.Dependency;
 import io.spring.initializr.web.project.ProjectRequest;
 import io.spring.start.site.extension.AbstractExtensionTests;
 import org.junit.jupiter.api.Test;
@@ -47,15 +48,6 @@ class SpringCloudContractMavenBuildCustomizerTests extends AbstractExtensionTest
 	}
 
 	@Test
-	void springCloudContractVerifierPluginForSpringBoot21WithNoAdditionalConfiguration() {
-		ProjectRequest projectRequest = createProjectRequest("cloud-contract-verifier");
-		projectRequest.setBootVersion("2.1.0.RELEASE");
-		assertThat(mavenPom(projectRequest))
-				.hasText("/project/build/plugins/plugin[1]/artifactId", "spring-cloud-contract-maven-plugin")
-				.doesNotContain("testFramework").doesNotContain("testMode");
-	}
-
-	@Test
 	void springCloudContractVerifierPluginForSpringBoot22WithJUnit5ByDefault() {
 		ProjectRequest projectRequest = createProjectRequest("cloud-contract-verifier");
 		projectRequest.setBootVersion("2.2.0.RELEASE");
@@ -70,6 +62,15 @@ class SpringCloudContractMavenBuildCustomizerTests extends AbstractExtensionTest
 		assertThat(mavenPom(projectRequest))
 				.hasText("/project/build/plugins/plugin[1]/artifactId", "spring-cloud-contract-maven-plugin")
 				.hasText("/project/build/plugins/plugin[1]/configuration/testMode", "WEBTESTCLIENT");
+	}
+
+	@Test
+	void springWebTestClientDependencyAddedWhenWebFluxIsPresent() {
+		ProjectRequest projectRequest = createProjectRequest("cloud-contract-verifier", "webflux");
+		Dependency springWebTestClientDep = Dependency.withId("rest-assured-spring-web-test-client", "io.rest-assured",
+				"spring-web-test-client");
+		springWebTestClientDep.setScope(Dependency.SCOPE_TEST);
+		assertThat(mavenPom(projectRequest)).hasDependency(springWebTestClientDep);
 	}
 
 }

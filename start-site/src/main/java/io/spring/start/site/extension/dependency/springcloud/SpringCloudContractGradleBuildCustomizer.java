@@ -1,5 +1,5 @@
 /*
- * Copyright 2012-2020 the original author or authors.
+ * Copyright 2012-2021 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,8 @@
 
 package io.spring.start.site.extension.dependency.springcloud;
 
+import io.spring.initializr.generator.buildsystem.Dependency;
+import io.spring.initializr.generator.buildsystem.DependencyScope;
 import io.spring.initializr.generator.buildsystem.MavenRepository;
 import io.spring.initializr.generator.buildsystem.gradle.GradleBuild;
 import io.spring.initializr.generator.project.ProjectDescription;
@@ -37,7 +39,7 @@ class SpringCloudContractGradleBuildCustomizer implements BuildCustomizer<Gradle
 
 	private static final Log logger = LogFactory.getLog(SpringCloudContractGradleBuildCustomizer.class);
 
-	private static final VersionRange SPRING_BOOT_2_2_OR_LATER = VersionParser.DEFAULT.parseRange("2.2.0.M1");
+	private static final VersionRange SPRING_CLOUD_CONTRACT_3_0_OR_LATER = VersionParser.DEFAULT.parseRange("3.0.0.M4");
 
 	private static final MavenRepository SPRING_MILESTONES = MavenRepository
 			.withIdAndUrl("spring-milestones", "https://repo.spring.io/milestone").name("Spring Milestones").build();
@@ -71,23 +73,29 @@ class SpringCloudContractGradleBuildCustomizer implements BuildCustomizer<Gradle
 				.dependency("org.springframework.cloud:spring-cloud-contract-gradle-plugin:" + sccPluginVersion));
 		build.plugins().apply("spring-cloud-contract");
 		build.tasks().customize("contracts", (task) -> {
-			if (SPRING_BOOT_2_2_OR_LATER.match(platformVersion)) {
-				task.attribute("targetFramework",
-						"org.springframework.cloud.contract.verifier.config.TestFramework.JUNIT5");
-			}
+			task.attribute("testFramework", "org.springframework.cloud.contract.verifier.config.TestFramework.JUNIT5");
 			if (build.dependencies().has("webflux")) {
 				task.attribute("testMode", "'WebTestClient'");
+				build.dependencies().add("rest-assured-spring-web-test-client",
+						Dependency.withCoordinates("io.rest-assured", "spring-web-test-client")
+								.scope(DependencyScope.TEST_COMPILE));
 			}
 		});
+		if (SPRING_CLOUD_CONTRACT_3_0_OR_LATER.match(VersionParser.DEFAULT.parse(sccPluginVersion))) {
+			build.tasks().customize("contractTest", (task) -> task.invoke("useJUnitPlatform"));
+		}
 		configurePluginRepositories(build, sccPluginVersion);
 	}
 
 	private void configurePluginRepositories(GradleBuild mavenBuild, String sccPluginVersion) {
-		String qualifier = Version.parse(sccPluginVersion).getQualifier().getId();
-		if (!"RELEASE".equals(qualifier)) {
-			mavenBuild.pluginRepositories().add(SPRING_MILESTONES);
-			if ("BUILD-SNAPSHOT".equals(qualifier)) {
-				mavenBuild.pluginRepositories().add(SPRING_SNAPSHOTS);
+		Version pluginVersion = Version.parse(sccPluginVersion);
+		if (pluginVersion.getQualifier() != null) {
+			String qualifier = pluginVersion.getQualifier().getId();
+			if (!qualifier.equals("RELEASE")) {
+				mavenBuild.pluginRepositories().add(SPRING_MILESTONES);
+				if (qualifier.contains("SNAPSHOT")) {
+					mavenBuild.pluginRepositories().add(SPRING_SNAPSHOTS);
+				}
 			}
 		}
 	}
